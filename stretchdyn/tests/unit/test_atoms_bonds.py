@@ -16,7 +16,7 @@ def atom_h():
 def test_bond_length(atom_cl, atom_h):
     k_ab = 4.88e-8
     r_e_ab = 1.27455
-    bond = Bond(atom_a=atom_cl, atom_b=atom_h, r_e_ab=r_e_ab, k_ab=k_ab)
+    bond = Bond(atom_a=atom_h, atom_b=atom_cl, r_e_ab=r_e_ab, k_ab=k_ab)
     expected = np.array([r_e_ab, 0.0, 0.0])
     actual = bond.r_ab
     assert np.array_equal(expected, actual)
