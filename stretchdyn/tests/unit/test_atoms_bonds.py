@@ -1,5 +1,5 @@
-import pytest
-import numpy as np
+import pytest  # type: ignore
+import numpy as np  # type: ignore
 from stretchdyn.atoms_bonds import Atom, Bond
 
 

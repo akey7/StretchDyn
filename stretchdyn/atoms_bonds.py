@@ -1,5 +1,5 @@
-from dataclasses import dataclass
-import numpy as np
+from dataclasses import dataclass  # type: ignore
+import numpy as np  # type: ignore
 
 
 @dataclass
@@ -16,5 +16,5 @@ class Bond:
     k_ab: float
 
     @property
-    def r_ab(self):
+    def r_ab(self) -> np.array:
         return self.atom_a.position - self.atom_b.position
