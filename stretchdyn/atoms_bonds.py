@@ -1,11 +1,11 @@
-from dataclasses import dataclass  # type: ignore
+from dataclasses import dataclass, field
+from typing import List, Dict
 import numpy as np  # type: ignore
+from numpy.linalg import norm  # type: ignore
 
 
-@dataclass
 class Atom:
-    mass_amu: float
-    position: np.array
+    pass
 
 
 @dataclass
@@ -16,5 +16,19 @@ class Bond:
     k_ab: float
 
     @property
-    def r_ab(self) -> np.array:
-        return self.atom_a.position - self.atom_b.position
+    def r_ab(self):
+        return self.atom_a.pos - self.atom_b.pos
+
+
+@dataclass
+class Atom:
+    symbol: str
+    mass_amu: float
+    pos: np.array
+    vel: np.array
+    bonds: Dict[str, Bond] = field(default_factory=dict)
+
+
+@dataclass
+class Molecule:
+    atoms: Dict[str, Atom] = field(default_factory=dict)
