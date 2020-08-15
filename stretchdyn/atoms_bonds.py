@@ -1,14 +1,39 @@
 from dataclasses import dataclass, field
-from typing import List, Dict
+from typing import Any, Dict
 import numpy as np  # type: ignore
 from numpy.linalg import norm  # type: ignore
 
 
+@dataclass
 class Atom:
     """
-    This empty class is so I can get type checking to work down below.
+    Represents a single atom in a molecule
+
+    Instance attributes
+    -------------------
+    symbol: str
+        The element symbol of the atom ("H", "Cl", etc)
+
+    mass_amu: float
+        The mass in atomic mass units.
+
+    pos: np.array
+        The position vector of the atom.
+
+    vel: np.array
+        The velocity vector of the atom.
+
+    bonds: Dict[str, Bond]
+        The bonds in the into this atom. Note that the key is not the same
+        as the element symbol. It needs to be unique. Note that below it
+        is defined as type Dict[str, Any] because Bond is defined below
     """
-    pass
+
+    symbol: str
+    mass_amu: float
+    pos: np.array
+    vel: np.array
+    bonds: Dict[str, Any] = field(default_factory=dict)
 
 
 @dataclass
@@ -32,6 +57,7 @@ class Bond:
     k_ab: float
         The force constant for the stretch energy in the bond.
     """
+
     atom_a: Atom
     atom_b: Atom
     r_e_ab: float
@@ -48,7 +74,7 @@ class Bond:
             Difference as a NumPy array
         """
         return self.atom_a.pos - self.atom_b.pos
-    
+
     @property
     def stretch_derivative(self) -> float:
         """
@@ -85,36 +111,6 @@ class Bond:
             The force vector
         """
         return -self.stretch_derivative * self.unit
-
-
-@dataclass
-class Atom:
-    """
-    Represents a single atom in a molecule
-
-    Instance attributes
-    -------------------
-    symbol: str
-        The element symbol of the atom ("H", "Cl", etc)
-
-    mass_amu: float
-        The mass in atomic mass units.
-
-    pos: np.array
-        The position vector of the atom.
-
-    vel: np.array
-        The velocity vector of the atom.
-
-    bonds: Dict[str, Bond]
-        The bonds in the into this atom. Note that the key is not the same
-        as the element symbol. It needs to be unique.
-    """
-    symbol: str
-    mass_amu: float
-    pos: np.array
-    vel: np.array
-    bonds: Dict[str, Bond] = field(default_factory=dict)
 
 
 @dataclass
