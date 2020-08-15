@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from typing import Any, Dict
+from typing import Any, Dict, List
 import numpy as np  # type: ignore
 from numpy.linalg import norm  # type: ignore
 
@@ -37,7 +37,57 @@ class Atom:
     mass_amu: float
     pos: np.array
     vel: np.array
+    prev_accel: np.array
     bonds: Dict[str, Any] = field(default_factory=dict)
+    pos_history: List[np.array] = field(default_factory=list)
+
+    @property
+    def net_stretch_force(self) -> np.array:
+        """
+        Unit returned: amu * Å / fs^2
+
+        Returns
+        -------
+        np.array
+            Net stretch force.
+        """
+        total_stretch_force = np.zeros(3)
+        for bond in self.bonds.values():
+            total_stretch_force -= bond.stretch_force
+        return total_stretch_force
+
+    @property
+    def stretch_accel(self) -> np.array:
+        """
+        Units returned Å/fs^2
+
+        Returns
+        -------
+        np.array
+            The net acceleration due to stretch forces.
+        """
+        return self.net_stretch_force / self.mass_amu
+
+    def update_pos_vel(self) -> None:
+        """
+        Using the acceleration, computes the new velocity and position.
+        Uses velocity verlet integration.
+
+        It doesn't return anything. Rather, it mutates the instnace
+        variables.
+
+        Returns
+        -------
+        None
+            Simply mutates the instance variables.
+        """
+        dt_fs = 1
+        next_accel = self.stretch_accel
+        v_half_delta_t = self.vel + 0.5 * self.prev_accel * dt_fs
+        self.pos = self.pos + v_half_delta_t * dt_fs
+        self.vel = v_half_delta_t + 0.5 * next_accel * dt_fs
+        self.prev_accel = next_accel
+        self.pos_history.append(np.copy(self.pos))
 
 
 @dataclass
@@ -119,4 +169,20 @@ class Bond:
 
 @dataclass
 class Molecule:
+    """
+    This class just holds atoms, and has a convenience method
+    update_all_atoms() which calculates the next positions
+    and velocities for all the atoms.
+    """
+
     atoms: Dict[str, Atom] = field(default_factory=dict)
+
+    def update_all_atoms(self) -> None:
+        """
+        Returns
+        -------
+        None
+            Returns nothing. It just mutates the atoms in place.
+        """
+        for atom in self.atoms.values():
+            atom.update_pos_vel()
