@@ -13,25 +13,63 @@ class Atom:
 
 @dataclass
 class Bond:
+    """
+    This class represents a bond. It is comprised of instance attributes
+    and properties that compute the properties of the bond needed for
+    the molecular dynamics algorithm.
+    """
     atom_a: Atom
     atom_b: Atom
     r_e_ab: float
     k_ab: float
 
     @property
-    def r_ab(self):
+    def r_ab(self) -> np.array:
+        """
+        The difference in positions between atoms B and A as a vector.
+
+        Returns
+        -------
+        np.array
+            Difference as a NumPy array
+        """
         return self.atom_a.pos - self.atom_b.pos
     
     @property
-    def stretch_derivative(self):
+    def stretch_derivative(self) -> float:
+        """
+        The derivative of the stretch energy over the distance between atoms
+        A and B.
+
+        Returns
+        -------
+        float
+            The derivative of the stretch energy.
+        """
         return self.k_ab * (2 * norm(self.r_ab) - 2 * self.r_e_ab) / 2
 
     @property
-    def unit(self):
+    def unit(self) -> np.array:
+        """
+        The unit vector in the direction from A to B.
+
+        Returns
+        -------
+        np.array
+            The unit vector in the direction pointing from A to B.
+        """
         return self.r_ab / norm(self.r_ab)
 
     @property
-    def stretch_force(self):
+    def stretch_force(self) -> np.array:
+        """
+        The force exerted on A by B.
+
+        Returns
+        -------
+        np.array
+            The force vector
+        """
         return -self.stretch_derivative * self.unit
 
 
