@@ -37,3 +37,17 @@ def test_hcl_unit_cl_h(hcl_equilibrium):
     cl_h_bond = hcl_equilibrium.atoms["cl"].bonds["h"]
     actual = cl_h_bond.unit
     assert np.array_equal(actual, expected)
+
+
+def test_hcl_stretch_derivative_h_cl(hcl_equilibrium):
+    expected = 0.0
+    h_cl_bond = hcl_equilibrium.atoms["h"].bonds["cl"]
+    actual = h_cl_bond.stretch_derivative
+    assert actual == expected
+
+
+def test_hcl_stretch_derivative_cl_h(hcl_equilibrium):
+    expected = 0.0
+    cl_h_bond = hcl_equilibrium.atoms["cl"].bonds["h"]
+    actual = cl_h_bond.stretch_derivative
+    assert actual == expected

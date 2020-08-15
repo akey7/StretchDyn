@@ -24,7 +24,7 @@ class Bond:
     
     @property
     def stretch_derivative(self):
-        return self.k_ab * (2 * self.r_ab - 2 * self.r_e_ab) / 2
+        return self.k_ab * (2 * norm(self.r_ab) - 2 * self.r_e_ab) / 2
 
     @property
     def unit(self):
