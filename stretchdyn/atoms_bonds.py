@@ -17,6 +17,20 @@ class Bond:
     This class represents a bond. It is comprised of instance attributes
     and properties that compute the properties of the bond needed for
     the molecular dynamics algorithm.
+
+    Instance Attributes
+    -------------------
+    atom_a: Atom
+        The first atom (atom A) in the bond.
+
+    atom_b: Atom
+        The second atom (atom B) in the bond
+
+    r_e_ab: float
+        The equilibrium distance between atoms A and B.
+
+    k_ab: float
+        The force constant for the stretch energy in the bond.
     """
     atom_a: Atom
     atom_b: Atom
@@ -75,6 +89,27 @@ class Bond:
 
 @dataclass
 class Atom:
+    """
+    Represents a single atom in a molecule
+
+    Instance attributes
+    -------------------
+    symbol: str
+        The element symbol of the atom ("H", "Cl", etc)
+
+    mass_amu: float
+        The mass in atomic mass units.
+
+    pos: np.array
+        The position vector of the atom.
+
+    vel: np.array
+        The velocity vector of the atom.
+
+    bonds: Dict[str, Bond]
+        The bonds in the into this atom. Note that the key is not the same
+        as the element symbol. It needs to be unique.
+    """
     symbol: str
     mass_amu: float
     pos: np.array
