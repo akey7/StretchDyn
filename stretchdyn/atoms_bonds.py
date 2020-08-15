@@ -39,6 +39,23 @@ class Atom:
     vel: np.array
     bonds: Dict[str, Any] = field(default_factory=dict)
 
+    @property
+    def net_stretch_force(self) -> float:
+        """
+        Computes the net stretch force.
+
+        Unit returned: amu * angstrom / fs
+
+        Returns
+        -------
+        float
+            Net stretch force.
+        """
+        total_stretch_force = np.zeros(3)
+        for bond in self.bonds.values():
+            total_stretch_force -= bond.stretch_force
+        return total_stretch_force
+
 
 @dataclass
 class Bond:

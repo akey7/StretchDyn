@@ -65,3 +65,15 @@ def test_hcl_stretch_force_cl_h(hcl_equilibrium):
     cl_h_bond = hcl_equilibrium.atoms["cl"].bonds["h"]
     actual = cl_h_bond.stretch_force
     assert np.array_equal(actual, expected)
+
+
+def test_hcl_net_stretch_force_h_cl(hcl_equilibrium):
+    expected = np.array([0.0, 0.0, 0.0])
+    actual = hcl_equilibrium.atoms["h"].net_stretch_force
+    assert np.array_equal(actual, expected)
+
+
+def test_hcl_net_stretch_force_h_cl(hcl_equilibrium):
+    expected = np.array([0.0, 0.0, 0.0])
+    actual = hcl_equilibrium.atoms["cl"].net_stretch_force
+    assert np.array_equal(actual, expected)
