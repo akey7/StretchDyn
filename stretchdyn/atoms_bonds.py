@@ -170,3 +170,7 @@ class Bond:
 @dataclass
 class Molecule:
     atoms: Dict[str, Atom] = field(default_factory=dict)
+
+    def update_all_atoms(self):
+        for atom in self.atoms.values():
+            atom.update_pos_vel()
