@@ -169,8 +169,20 @@ class Bond:
 
 @dataclass
 class Molecule:
+    """
+    This class just holds atoms, and has a convenience method
+    update_all_atoms() which calculates the next positions
+    and velocities for all the atoms.
+    """
+
     atoms: Dict[str, Atom] = field(default_factory=dict)
 
-    def update_all_atoms(self):
+    def update_all_atoms(self) -> None:
+        """
+        Returns
+        -------
+        None
+            Returns nothing. It just mutates the atoms in place.
+        """
         for atom in self.atoms.values():
             atom.update_pos_vel()
