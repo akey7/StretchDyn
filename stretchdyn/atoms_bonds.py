@@ -37,6 +37,7 @@ class Atom:
     mass_amu: float
     pos: np.array
     vel: np.array
+    prev_accel: np.array
     bonds: Dict[str, Any] = field(default_factory=dict)
 
     @property
@@ -55,7 +56,7 @@ class Atom:
         return total_stretch_force
 
     @property
-    def stretch_acceleration(self) -> np.array:
+    def stretch_accel(self) -> np.array:
         """
         Units returned Å/fs^2
 
@@ -65,6 +66,26 @@ class Atom:
             The net acceleration due to stretch forces.
         """
         return self.net_stretch_force / self.mass_amu
+
+    def update_pos_vel(self) -> None:
+        """
+        Using the acceleration, computes the new velocity and position.
+        Uses velocity verlet integration.
+
+        It doesn't return anything. Rather, it mutates the instnace
+        variables.
+
+        Returns
+        -------
+        None
+            Simply mutates the instance variables.
+        """
+        dt_fs = 1
+        next_accel = self.stretch_accel
+        v_half_delta_t = self.vel + 0.5 * self.prev_accel * dt_fs
+        self.pos = self.pos + v_half_delta_t * dt_fs
+        self.vel = v_half_delta_t + 0.5 * next_accel * dt_fs
+        self.prev_accel = next_accel
 
 
 @dataclass
