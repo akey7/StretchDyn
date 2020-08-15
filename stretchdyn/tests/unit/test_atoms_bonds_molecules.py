@@ -67,13 +67,25 @@ def test_hcl_stretch_force_cl_h(hcl_equilibrium):
     assert np.array_equal(actual, expected)
 
 
-def test_hcl_net_stretch_force_h_cl(hcl_equilibrium):
+def test_hcl_net_stretch_force_h(hcl_equilibrium):
     expected = np.array([0.0, 0.0, 0.0])
     actual = hcl_equilibrium.atoms["h"].net_stretch_force
     assert np.array_equal(actual, expected)
 
 
-def test_hcl_net_stretch_force_h_cl(hcl_equilibrium):
+def test_hcl_net_stretch_force_cl(hcl_equilibrium):
     expected = np.array([0.0, 0.0, 0.0])
     actual = hcl_equilibrium.atoms["cl"].net_stretch_force
+    assert np.array_equal(actual, expected)
+
+
+def test_hcl_net_acceleration_h(hcl_equilibrium):
+    expected = np.array([0.0, 0.0, 0.0])
+    actual = hcl_equilibrium.atoms["h"].stretch_acceleration
+    assert np.array_equal(actual, expected)
+
+
+def test_hcl_net_acceleration_cl(hcl_equilibrium):
+    expected = np.array([0.0, 0.0, 0.0])
+    actual = hcl_equilibrium.atoms["cl"].stretch_acceleration
     assert np.array_equal(actual, expected)
