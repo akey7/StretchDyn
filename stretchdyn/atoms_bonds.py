@@ -5,6 +5,9 @@ from numpy.linalg import norm  # type: ignore
 
 
 class Atom:
+    """
+    This empty class is so I can get type checking to work down below.
+    """
     pass
 
 
@@ -18,6 +21,18 @@ class Bond:
     @property
     def r_ab(self):
         return self.atom_a.pos - self.atom_b.pos
+    
+    @property
+    def stretch_derivative(self):
+        return self.k_ab * (2 * self.r_ab - 2 * self.r_e_ab) / 2
+
+    @property
+    def unit(self):
+        return self.r_ab / norm(self.r_ab)
+
+    @property
+    def stretch_force(self):
+        return -self.stretch_derivative * self.unit
 
 
 @dataclass

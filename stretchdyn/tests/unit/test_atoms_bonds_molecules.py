@@ -23,3 +23,17 @@ def test_hcl_r_ab(hcl_equilibrium):
     cl = hcl_equilibrium.atoms["cl"]
     assert np.array_equal(h.bonds["cl"].r_ab, np.array([-r_e_ab, 0.0, 0.0]))
     assert np.array_equal(cl.bonds["h"].r_ab, np.array([r_e_ab, 0.0, 0.0]))
+
+
+def test_hcl_unit_h_cl(hcl_equilibrium):
+    expected = np.array([-1.0, 0.0, 0.0])
+    h_cl_bond = hcl_equilibrium.atoms["h"].bonds["cl"]
+    actual = h_cl_bond.unit
+    assert np.array_equal(actual, expected)
+
+
+def test_hcl_unit_cl_h(hcl_equilibrium):
+    expected = np.array([1.0, 0.0, 0.0])
+    cl_h_bond = hcl_equilibrium.atoms["cl"].bonds["h"]
+    actual = cl_h_bond.unit
+    assert np.array_equal(actual, expected)
