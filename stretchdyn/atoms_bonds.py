@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from typing import Any, Dict
+from typing import Any, Dict, List
 import numpy as np  # type: ignore
 from numpy.linalg import norm  # type: ignore
 
@@ -39,6 +39,7 @@ class Atom:
     vel: np.array
     prev_accel: np.array
     bonds: Dict[str, Any] = field(default_factory=dict)
+    pos_history: List[np.array] = field(default_factory=list)
 
     @property
     def net_stretch_force(self) -> np.array:
@@ -86,6 +87,7 @@ class Atom:
         self.pos = self.pos + v_half_delta_t * dt_fs
         self.vel = v_half_delta_t + 0.5 * next_accel * dt_fs
         self.prev_accel = next_accel
+        self.pos_history.append(np.copy(self.pos))
 
 
 @dataclass
