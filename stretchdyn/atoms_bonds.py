@@ -18,7 +18,7 @@ class Atom:
         The mass in atomic mass units.
 
     pos: np.array
-        The position vector of the atom.
+        The position vector of the atom in angstroms.
 
     vel: np.array
         The velocity vector of the atom.
@@ -26,7 +26,11 @@ class Atom:
     bonds: Dict[str, Bond]
         The bonds in the into this atom. Note that the key is not the same
         as the element symbol. It needs to be unique. Note that below it
-        is defined as type Dict[str, Any] because Bond is defined below
+        is defined as type Dict[str, Any] because Bond is defined below.
+
+        In fact there are a number of uses of bond that appear in this class.
+        But, since Bond is defined below this class, they cannot be type hinted
+        as Bond.
     """
 
     symbol: str
