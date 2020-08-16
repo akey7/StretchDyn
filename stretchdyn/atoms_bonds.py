@@ -82,10 +82,9 @@ class Atom:
             Simply mutates the instance variables.
         """
         dt_fs = 1
+        self.pos = self.pos + self.vel * dt_fs + 0.5 * self.prev_accel * dt_fs ** 2
         next_accel = self.stretch_accel
-        v_half_delta_t = self.vel + 0.5 * self.prev_accel * dt_fs
-        self.pos = self.pos + v_half_delta_t * dt_fs
-        self.vel = v_half_delta_t + 0.5 * next_accel * dt_fs
+        self.vel = self.vel + 0.5 * (self.prev_accel + next_accel) * dt_fs
         self.prev_accel = next_accel
         self.pos_history.append(np.copy(self.pos))
 
